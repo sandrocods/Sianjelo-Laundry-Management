@@ -45,4 +45,23 @@ public class databaseHelper {
         return false;
     }
 
+    public static String getRole(String username, String password) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT role FROM tb_user WHERE username = '" + username + "' AND password = '" + password + "'");
+            if (rs.next()) {
+                return rs.getString("role");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
 }

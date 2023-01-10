@@ -121,6 +121,16 @@ public class LoginPage extends JFrame {
                     boolean status_login = databaseHelper.login(username, password);
                     if (status_login) {
                         JOptionPane.showMessageDialog(null, "Login Berhasil", "Login - Success", JOptionPane.INFORMATION_MESSAGE);
+
+
+                        dispose();
+                        new DashboardPage(
+                                username,
+                                password
+                        );
+
+
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Login Gagal Pastikan Username & Password anda benar", "Login - Error", JOptionPane.ERROR_MESSAGE);
                         txt_username.setText("");
