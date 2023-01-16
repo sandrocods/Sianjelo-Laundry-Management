@@ -19,6 +19,7 @@ public class DashboardPage extends JFrame {
     private JLabel lbl_total_user;
     private JButton btn_manage_member;
     private JLabel lbl_total_member;
+    private JButton btn_manage_paket;
     private JButton btn_test;
 
     public DashboardPage(String username, String password) {
@@ -46,8 +47,11 @@ public class DashboardPage extends JFrame {
 
         lbl_username = new JLabel("Welcome, " + username);
         lbl_username.setBounds(840, 40, 300, 20);
+        lbl_username.setForeground(new java.awt.Color(41, 65, 114));
         lbl_username.setFont(new java.awt.Font("", 0, 20));
         this.getLayeredPane().add(lbl_username, Integer.valueOf(Integer.MAX_VALUE));
+
+
 
 
 
@@ -78,6 +82,16 @@ public class DashboardPage extends JFrame {
             btn_manage_member.setVisible(true);
             this.getLayeredPane().add(btn_manage_member, Integer.valueOf(Integer.MAX_VALUE));
 
+            /*
+             * Button Manage Paket Aktif
+             */
+            ImageIcon icon3 = new ImageIcon("src\\assets\\icon_manage_member.png");
+            btn_manage_paket.setIcon(icon3);
+            btn_manage_paket.setForeground(new java.awt.Color(255, 255, 255));
+            btn_manage_paket.setBounds(0, 245, 295, 35);
+            btn_manage_paket.setVisible(true);
+            this.getLayeredPane().add(btn_manage_paket, Integer.valueOf(Integer.MAX_VALUE));
+
 
         } else if (Objects.equals(Role_user, "karyawan")) { // Logika Role User Karyawan
 
@@ -94,11 +108,33 @@ public class DashboardPage extends JFrame {
         btn_logout_user.setVisible(true);
         this.getLayeredPane().add( btn_logout_user, Integer.valueOf(Integer.MAX_VALUE));
 
+
+
+        /*
+         * Threading
+         */
+
+        databaseHelper db = new databaseHelper();
+        Thread thread = new Thread(() -> {
+            while (true) {
+                lbl_total_user.setText(db.getTotalUser());
+                lbl_total_member.setText(db.getTotalMember());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+
+
+
         /*
          * Label Total User
          */
-        databaseHelper db = new databaseHelper();
-        lbl_total_user = new JLabel(db.getTotalUser());
+
         lbl_total_user.setBounds(480, 80, 300, 300);
         lbl_total_user.setFont(new java.awt.Font("", 0, 70));
         lbl_total_user.setForeground(new java.awt.Color(41, 65, 114));
@@ -108,12 +144,11 @@ public class DashboardPage extends JFrame {
          * Label Total Member
          */
 
-        lbl_total_member = new JLabel(db.getTotalMember());
+
         lbl_total_member.setBounds(1080, 80, 300, 300);
         lbl_total_member.setFont(new java.awt.Font("", 0, 70));
         lbl_total_member.setForeground(new java.awt.Color(41, 65, 114));
         this.getLayeredPane().add(lbl_total_member, Integer.valueOf(Integer.MAX_VALUE));
-
 
         btn_logout_user.addActionListener(new ActionListener() {
             @Override
@@ -133,6 +168,13 @@ public class DashboardPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ManageMemberPage();
+
+            }
+        });
+        btn_manage_paket.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PacketPage();
 
             }
         });

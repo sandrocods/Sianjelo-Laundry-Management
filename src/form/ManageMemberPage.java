@@ -79,7 +79,6 @@ public class ManageMemberPage extends JFrame {
     public ManageMemberPage() {
         this.setVisible(true);
         this.setSize(1280, 800);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Sianjelau - Manage Member Page");
         this.setLocationRelativeTo(null);
         this.setResizable(false);

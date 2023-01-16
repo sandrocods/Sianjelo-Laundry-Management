@@ -159,11 +159,13 @@ public class PacketPage extends JFrame{
                     JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
                 } else {
                     databaseHelper db = new databaseHelper();
-                    if (db.addDataPaket(newId,nama,jenis, harga)) {
+                    if (db.addDataPaket(newId , nama, jenis, harga)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
                         model.addRow(new Object[]{newId,nama,jenis, harga});
+                        reset();
                     } else {
                         JOptionPane.showMessageDialog(null, "Data gagal disimpan");
+
                     }
                 }
             }
@@ -218,6 +220,11 @@ public class PacketPage extends JFrame{
                     databaseHelper db = new databaseHelper();
                     if (db.updateDataPaket(id, nama,jenis,harga)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+                        model.setValueAt(nama, tblPaket.getSelectedRow(), 1);
+                        model.setValueAt(jenis, tblPaket.getSelectedRow(), 2);
+                        model.setValueAt(harga, tblPaket.getSelectedRow(), 3);
+
+                        reset();
                     }else{
                         JOptionPane.showMessageDialog(null, "Data gagal diubah");
 
