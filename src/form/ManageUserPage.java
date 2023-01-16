@@ -2,6 +2,7 @@ package form;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import helper.databaseHelper;
 
 import java.awt.event.ActionEvent;
@@ -27,17 +28,24 @@ public class ManageUserPage extends JFrame {
     private JButton btn_batal;
     private JLabel lbl_id;
     private JTextField txt_id;
+    private JButton btn_cari_data;
+    private JTextField txt_cari_data;
+    private JLabel lbl_cari_data;
 
     private DefaultTableModel model;
 
     public void kondisiAwal() {
 
+        txt_id.setEnabled(false);
         txt_username.setEnabled(false);
         txt_password.setEnabled(false);
         txt_full_name.setEnabled(false);
         cb_role.setEnabled(false);
 
+        txt_cari_data.setText("");
 
+
+        txt_id.setText("");
         txt_username.setText("");
         txt_password.setText("");
         txt_full_name.setText("");
@@ -53,9 +61,13 @@ public class ManageUserPage extends JFrame {
         btn_batal.setText("Batal");
 
 
+
+
+
     }
 
     public void aktif() {
+        txt_id.setEnabled(true);
         txt_username.setEnabled(true);
         txt_password.setEnabled(true);
         txt_full_name.setEnabled(true);
@@ -189,12 +201,45 @@ public class ManageUserPage extends JFrame {
         this.getLayeredPane().add(txt_id, Integer.valueOf(Integer.MAX_VALUE));
 
         /*
+         * Label cari data
+         */
+        lbl_cari_data = new JLabel("Cari Data");
+        lbl_cari_data.setBounds(820, 170, 100, 20);
+        this.getLayeredPane().add(lbl_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
+         * Text Field Search
+         */
+        txt_cari_data.setBounds(820, 200, 300, 25);
+        txt_cari_data.setBorder(null);
+        this.getLayeredPane().add(txt_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+
+
+
+        /*
+         * Button cari data
+         */
+        btn_cari_data.setBounds(900, 240, 130, 25);
+        btn_cari_data.setForeground(new java.awt.Color(255, 255, 255));
+        btn_cari_data.setBorder(null);
+        this.getLayeredPane().add(btn_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+
+
+
+
+
+
+
+        /*
          * Table
          */
 
         table1.setBounds(130, 400, 1000, 300);
         table1.setBorder(null);
-        table1.getColumnModel().getColumn(0).setPreferredWidth(10); 
+        table1.setDefaultEditor(Object.class, null);
+
         this.getLayeredPane().add(table1, Integer.valueOf(Integer.MAX_VALUE));
 
         /*
@@ -208,15 +253,25 @@ public class ManageUserPage extends JFrame {
         btn_tambah.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (btn_tambah.getText().equals("Tambah Data")){
+                if (btn_tambah.getText().equals("Tambah Data")) {
                     kondisiAwal();
                     btn_tambah.setText("Simpan Data");
                     btn_edit.setEnabled(false);
                     btn_delete.setEnabled(false);
                     btn_batal.setText("Batal");
                     aktif();
+                    txt_id.setEnabled(false);
+                    txt_username.requestFocus();
+
+                    String oldId = table1.getValueAt(table1.getRowCount() - 1, 0).toString();
+                    int newId = Integer.parseInt(oldId) + 1;
+                    txt_id.setText(String.valueOf(newId));
+
+
+
 
                 } else {
+                    String id = txt_id.getText();
                     String username = txt_username.getText();
                     String password = txt_password.getText();
                     String full_name = txt_full_name.getText();
@@ -228,7 +283,7 @@ public class ManageUserPage extends JFrame {
                         databaseHelper db = new databaseHelper();
                         if (db.addDataUser(username, password, full_name, role)) {
                             JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
-                            model.addRow(new Object[]{username, password, full_name, role});
+                            model.addRow(new Object[]{id, username, password, full_name, role});
                             kondisiAwal();
                         } else {
                             JOptionPane.showMessageDialog(null, "Data gagal disimpan");
@@ -240,8 +295,17 @@ public class ManageUserPage extends JFrame {
         btn_batal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (btn_batal.getText().equals("Batal")){
+                if (btn_batal.getText().equals("Batal")) {
+                    model.getDataVector().removeAllElements();
+                    model.fireTableDataChanged();
+
+                    databaseHelper db = new databaseHelper();
+                    db.cariDataUser(model, "");
                     kondisiAwal();
+
+
+
+
                 }
             }
         });
@@ -250,18 +314,21 @@ public class ManageUserPage extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 int row = table1.getSelectedRow();
-                String username = table1.getValueAt(row, 0).toString();
-                String password = table1.getValueAt(row, 1).toString();
-                String full_name = table1.getValueAt(row, 2).toString();
-                String role = table1.getValueAt(row, 3).toString();
 
+                String ID = table1.getValueAt(row, 0).toString();
+                String username = table1.getValueAt(row, 1).toString();
+                String password = table1.getValueAt(row, 2).toString();
+                String full_name = table1.getValueAt(row, 3).toString();
+                String role = table1.getValueAt(row, 4).toString();
+
+                txt_id.setText(ID);
                 txt_username.setText(username);
                 txt_password.setText(password);
                 txt_full_name.setText(full_name);
 
-                if (role.equals("admin")){
+                if (role.equals("admin")) {
                     cb_role.setSelectedIndex(0);
-                } else if (role.equals("karyawan")){
+                } else if (role.equals("karyawan")) {
                     cb_role.setSelectedIndex(1);
                 } else {
                     cb_role.setSelectedIndex(2);
@@ -271,27 +338,141 @@ public class ManageUserPage extends JFrame {
             }
         });
 
+        btn_edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (btn_edit.getText().equals("Edit Data")) {
+                    kondisiAwal();
+                    btn_edit.setText("Simpan Data");
+                    btn_tambah.setEnabled(false);
+                    btn_delete.setEnabled(false);
+                    btn_batal.setText("Batal");
+                    aktif();
+                    txt_id.setEnabled(false);
+                    txt_username.requestFocus();
+
+                    txt_id.setText(table1.getValueAt(table1.getSelectedRow(), 0).toString());
+                    txt_username.setText(table1.getValueAt(table1.getSelectedRow(), 1).toString());
+                    txt_password.setText(table1.getValueAt(table1.getSelectedRow(), 2).toString());
+                    txt_full_name.setText(table1.getValueAt(table1.getSelectedRow(), 3).toString());
+                    String role = table1.getValueAt(table1.getSelectedRow(), 4).toString();
+                    if (role.equals("admin")) {
+                        cb_role.setSelectedIndex(0);
+                    } else if (role.equals("karyawan")) {
+                        cb_role.setSelectedIndex(1);
+                    } else {
+                        cb_role.setSelectedIndex(2);
+                    }
+                    cb_role.setSelectedItem(role);
+
+
+                } else {
+                    String id = txt_id.getText();
+                    String username = txt_username.getText();
+                    String password = txt_password.getText();
+                    String full_name = txt_full_name.getText();
+                    String role = cb_role.getSelectedItem().toString();
+
+                    if (username.equals("") || password.equals("") || full_name.equals("") || role.equals("")) {
+                        JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
+                    } else {
+                        databaseHelper db = new databaseHelper();
+                        if (db.updateDataUser(id, username, password, full_name, role)) {
+                            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+                            model.setValueAt(id, table1.getSelectedRow(), 0);
+                            model.setValueAt(username, table1.getSelectedRow(), 1);
+                            model.setValueAt(password, table1.getSelectedRow(), 2);
+                            model.setValueAt(full_name, table1.getSelectedRow(), 3);
+                            model.setValueAt(role, table1.getSelectedRow(), 4);
+                            kondisiAwal();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Data gagal diubah");
+                        }
+                    }
+                }
+            }
+        });
+        btn_delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (btn_delete.getText().equals("Hapus Data")) {
+
+
+                    btn_tambah.setEnabled(false);
+                    btn_edit.setEnabled(false);
+                    btn_batal.setText("Batal");
+
+                    txt_id.setEnabled(false);
+                    txt_username.requestFocus();
+
+                    String id = txt_id.getText();
+                    if (id.equals("")){
+                        JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
+                    } else {
+                        txt_id.setText(table1.getValueAt(table1.getSelectedRow(), 0).toString());
+                        txt_username.setText(table1.getValueAt(table1.getSelectedRow(), 1).toString());
+                        txt_password.setText(table1.getValueAt(table1.getSelectedRow(), 2).toString());
+                        txt_full_name.setText(table1.getValueAt(table1.getSelectedRow(), 3).toString());
+                        String role = table1.getValueAt(table1.getSelectedRow(), 4).toString();
+                        if (role.equals("admin")) {
+                            cb_role.setSelectedIndex(0);
+                        } else if (role.equals("karyawan")) {
+                            cb_role.setSelectedIndex(1);
+                        } else {
+                            cb_role.setSelectedIndex(2);
+                        }
+                        cb_role.setSelectedItem(role);
+
+
+                        if (JOptionPane.showConfirmDialog(null, "Apakah anda yakin ingin menghapus data ini?", "Hapus Data", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            databaseHelper db = new databaseHelper();
+                            if (db.deleteDataUser(txt_id.getText())) {
+                                JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                                model.removeRow(table1.getSelectedRow());
+                                kondisiAwal();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Data gagal dihapus");
+                            }
+                        }
+                    }
+
+
+
+
+
+
+
+                }
+            }
+        });
+        btn_cari_data.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cari = txt_cari_data.getText();
+                databaseHelper db = new databaseHelper();
+                db.cariDataUser(model, cari);
+            }
+        });
     }
 
 
 
     private void createUIComponents() {
-            model = new DefaultTableModel();
-            table1 = new JTable(model);
-
-            // add table header
-            model.addColumn("ID");
-
-            // set width column 0
 
 
-            model.addColumn("Username");
-            model.addColumn("Password");
-            model.addColumn("Nama Lengkap");
-            model.addColumn("Role");
+        model = new DefaultTableModel();
+        table1 = new JTable(model);
 
-            databaseHelper db = new databaseHelper();
-            db.getDataUser(model);
+        // add table header
+        model.addColumn("ID");
+        model.addColumn("Username");
+        model.addColumn("Password");
+        model.addColumn("Nama Lengkap");
+        model.addColumn("Role");
+
+        databaseHelper db = new databaseHelper();
+        db.getDataUser(model);
+
 
 
 

@@ -100,4 +100,58 @@ public class databaseHelper {
         }
         return false;
     }
+
+    public boolean updateDataUser(String id, String username, String password, String full_name, String role) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE `tb_user` SET `username` = '"+ username +"', `password` = '"+ password +"', `full_name` = '"+ full_name +"', `role` = '"+ role +"' WHERE `tb_user`.`id` = "+ id +";");
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return false;
+    }
+
+    public boolean deleteDataUser(String id) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM `tb_user` WHERE `tb_user`.`id` = "+ id +";");
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return false;
+    }
+
+    public void cariDataUser(DefaultTableModel model, String cari) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username LIKE '%"+ cari +"%' OR full_name LIKE '%"+ cari +"%'");
+
+            model.getDataVector().removeAllElements();
+            model.fireTableDataChanged();
+
+            while (rs.next()) {
+                Object[] row = {rs.getString("id") ,rs.getString("username"), rs.getString("password"), rs.getString("full_name"), rs.getString("role")};
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+    }
 }
