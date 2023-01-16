@@ -157,7 +157,7 @@ public class ManageUserPage extends JFrame {
          * Button Tambah
          */
 
-        btn_tambah.setBounds(350, 330, 130, 25);
+        btn_tambah.setBounds(250, 330, 130, 25);
         btn_tambah.setForeground(new java.awt.Color(255, 255, 255));
         btn_tambah.setBorder(null);
         this.getLayeredPane().add(btn_tambah, Integer.valueOf(Integer.MAX_VALUE));
@@ -165,7 +165,7 @@ public class ManageUserPage extends JFrame {
         /*
          * Button Edit
          */
-        btn_edit.setBounds(550, 330, 130, 25);
+        btn_edit.setBounds(450, 330, 130, 25);
         btn_edit.setForeground(new java.awt.Color(255, 255, 255));
         btn_edit.setBorder(null);
         this.getLayeredPane().add(btn_edit, Integer.valueOf(Integer.MAX_VALUE));
@@ -173,7 +173,7 @@ public class ManageUserPage extends JFrame {
         /*
          * Button Delete
          */
-        btn_delete.setBounds(750, 330, 130, 25);
+        btn_delete.setBounds(650, 330, 130, 25);
         btn_delete.setForeground(new java.awt.Color(255, 255, 255));
         btn_delete.setBorder(null);
         this.getLayeredPane().add(btn_delete, Integer.valueOf(Integer.MAX_VALUE));
@@ -181,7 +181,7 @@ public class ManageUserPage extends JFrame {
         /*
          * Button Batal
          */
-        btn_batal.setBounds(950, 330, 130, 25);
+        btn_batal.setBounds(850, 330, 130, 25);
         btn_batal.setForeground(new java.awt.Color(255, 255, 255));
         btn_batal.setBorder(null);
         this.getLayeredPane().add(btn_batal, Integer.valueOf(Integer.MAX_VALUE));
@@ -213,9 +213,6 @@ public class ManageUserPage extends JFrame {
         txt_cari_data.setBounds(820, 200, 300, 25);
         txt_cari_data.setBorder(null);
         this.getLayeredPane().add(txt_cari_data, Integer.valueOf(Integer.MAX_VALUE));
-
-
-
 
         /*
          * Button cari data

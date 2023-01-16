@@ -16,6 +16,9 @@ public class DashboardPage extends JFrame {
     private JLabel lbl_username;
     private JButton btn_manage_user;
     private JButton btn_logout_user;
+    private JLabel lbl_total_user;
+    private JButton btn_manage_member;
+    private JLabel lbl_total_member;
     private JButton btn_test;
 
     public DashboardPage(String username, String password) {
@@ -46,6 +49,8 @@ public class DashboardPage extends JFrame {
         lbl_username.setFont(new java.awt.Font("", 0, 20));
         this.getLayeredPane().add(lbl_username, Integer.valueOf(Integer.MAX_VALUE));
 
+
+
         /*
          * Logika Role User
          */
@@ -63,6 +68,16 @@ public class DashboardPage extends JFrame {
             btn_manage_user.setVisible(true);
             this.getLayeredPane().add(btn_manage_user, Integer.valueOf(Integer.MAX_VALUE));
 
+            /*
+             * Button Manage Member Aktif
+             */
+            ImageIcon icon2 = new ImageIcon("src\\assets\\icon_manage_member.png");
+            btn_manage_member.setIcon(icon2);
+            btn_manage_member.setForeground(new java.awt.Color(255, 255, 255));
+            btn_manage_member.setBounds(0, 190, 295, 35);
+            btn_manage_member.setVisible(true);
+            this.getLayeredPane().add(btn_manage_member, Integer.valueOf(Integer.MAX_VALUE));
+
 
         } else if (Objects.equals(Role_user, "karyawan")) { // Logika Role User Karyawan
 
@@ -79,6 +94,26 @@ public class DashboardPage extends JFrame {
         btn_logout_user.setVisible(true);
         this.getLayeredPane().add( btn_logout_user, Integer.valueOf(Integer.MAX_VALUE));
 
+        /*
+         * Label Total User
+         */
+        databaseHelper db = new databaseHelper();
+        lbl_total_user = new JLabel(db.getTotalUser());
+        lbl_total_user.setBounds(480, 80, 300, 300);
+        lbl_total_user.setFont(new java.awt.Font("", 0, 70));
+        lbl_total_user.setForeground(new java.awt.Color(41, 65, 114));
+        this.getLayeredPane().add(lbl_total_user, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
+         * Label Total Member
+         */
+
+        lbl_total_member = new JLabel(db.getTotalMember());
+        lbl_total_member.setBounds(1080, 80, 300, 300);
+        lbl_total_member.setFont(new java.awt.Font("", 0, 70));
+        lbl_total_member.setForeground(new java.awt.Color(41, 65, 114));
+        this.getLayeredPane().add(lbl_total_member, Integer.valueOf(Integer.MAX_VALUE));
+
 
         btn_logout_user.addActionListener(new ActionListener() {
             @Override
@@ -91,6 +126,13 @@ public class DashboardPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ManageUserPage();
+
+            }
+        });
+        btn_manage_member.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ManageMemberPage();
 
             }
         });

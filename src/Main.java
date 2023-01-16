@@ -1,8 +1,8 @@
-import form.LandingPage;
+import form.ManageMemberPage;
 
 public class Main {
     public static void main(String[] args) {
-        LandingPage landingPage = new LandingPage();
+        ManageMemberPage landingPage = new ManageMemberPage();
 
 
     }
