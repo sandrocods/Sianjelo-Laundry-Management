@@ -67,6 +67,20 @@ INSERT INTO `tb_user` (`id`, `username`, `password`, `full_name`, `role`, `creat
 (1, 'sandroputraa', 'sandro123abc', 'Martinus Krisandro Perdana Putra', 'admin', '2023-01-07 11:37:48'),
 (2, 'budi', 'budi', 'budi', 'karyawan', '2023-01-10 23:27:00');
 
+
+CREATE TABLE `tb_paket` (
+  `id_paket` int(11) NOT NULL,
+  `nama_paket` text NOT NULL,
+  `jenis_paket` text NOT NULL,
+  `harga_paket` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `tb_paket`
+--
+
+INSERT INTO `tb_paket` (`id_paket`, `nama_paket`, `jenis_paket`, `harga_paket`) VALUES
+(3, 'Reguler', 'Kiloan', 6000);
 --
 -- Indexes for dumped tables
 --
