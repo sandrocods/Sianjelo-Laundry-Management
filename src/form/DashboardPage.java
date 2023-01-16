@@ -3,11 +3,13 @@ package form;
 import helper.databaseHelper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class DashboardPage extends JFrame {
+
 
 
     private JPanel panel1;
@@ -83,6 +85,13 @@ public class DashboardPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new LandingPage();
                 dispose();
+            }
+        });
+        btn_manage_user.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ManageUserPage();
+
             }
         });
     }

@@ -26,7 +26,6 @@
           <hideActionText value="false"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="4"/>
-          <icon value="assets/icon_manage_user.png"/>
           <text value="Manage User"/>
           <verticalAlignment value="0"/>
           <verticalTextPosition value="0"/>
@@ -42,7 +41,6 @@
           <hideActionText value="false"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="4"/>
-          <icon value="assets/icon_logout_user.png"/>
           <text value="Logout"/>
           <verticalAlignment value="0"/>
           <verticalTextPosition value="0"/>
