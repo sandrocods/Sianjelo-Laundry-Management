@@ -23,6 +23,9 @@ public class DashboardPage extends JFrame {
     private JLabel lbl_total_pendapatan;
     private JLabel lbl_proses_selesai;
     private JLabel lbl_proses_pengerjaan;
+    private JButton btn_update_transaksi;
+    private JButton btn_laporan;
+    private JButton btn_setting_app;
     private JButton btn_test;
 
     public DashboardPage(String username, String password) {
@@ -105,10 +108,66 @@ public class DashboardPage extends JFrame {
             btn_transaksi.setVisible(true);
             this.getLayeredPane().add(btn_transaksi, Integer.valueOf(Integer.MAX_VALUE));
 
+            /*
+             * Button Update Transaksi Aktif
+             */
+            ImageIcon icon5 = new ImageIcon("src\\assets\\icon_update_transaksi.png");
+            btn_update_transaksi.setIcon(icon5);
+            btn_update_transaksi.setForeground(new java.awt.Color(255, 255, 255));
+            btn_update_transaksi.setBounds(0, 355, 295, 35);
+            btn_update_transaksi.setVisible(true);
+            this.getLayeredPane().add(btn_update_transaksi, Integer.valueOf(Integer.MAX_VALUE));
+
+            /*
+             * Button Laporan Aktif
+             */
+            ImageIcon icon6 = new ImageIcon("src\\assets\\icon_report.png");
+            btn_laporan.setIcon(icon6);
+            btn_laporan.setForeground(new java.awt.Color(255, 255, 255));
+            btn_laporan.setBounds(0, 410, 295, 35);
+            btn_laporan.setVisible(true);
+            this.getLayeredPane().add(btn_laporan, Integer.valueOf(Integer.MAX_VALUE));
+
+            /*
+             * Button Setting App Aktif
+             */
+            ImageIcon icon7 = new ImageIcon("src\\assets\\icon_setting_app.png");
+            btn_setting_app.setIcon(icon7);
+            btn_setting_app.setForeground(new java.awt.Color(255, 255, 255));
+            btn_setting_app.setBounds(0, 465, 295, 35);
+            btn_setting_app.setVisible(true);
+            this.getLayeredPane().add(btn_setting_app, Integer.valueOf(Integer.MAX_VALUE));
+
+
 
 
         } else if (Objects.equals(Role_user, "karyawan")) { // Logika Role User Karyawan
+            /*
+             * Button Transaksi Aktif
+             */
+            ImageIcon icon4 = new ImageIcon("src\\assets\\icon_transaksi.png");
+            btn_transaksi.setIcon(icon4);
+            btn_transaksi.setForeground(new java.awt.Color(255, 255, 255));
+            btn_transaksi.setBounds(0, 300, 295, 35);
+            btn_transaksi.setVisible(true);
+            this.getLayeredPane().add(btn_transaksi, Integer.valueOf(Integer.MAX_VALUE));
 
+            /*
+             * Button Update Transaksi Aktif
+             */
+            ImageIcon icon5 = new ImageIcon("src\\assets\\icon_update_transaksi.png");
+            btn_update_transaksi.setIcon(icon5);
+            btn_update_transaksi.setForeground(new java.awt.Color(255, 255, 255));
+            btn_update_transaksi.setBounds(0, 355, 295, 35);
+            btn_update_transaksi.setVisible(true);
+            this.getLayeredPane().add(btn_update_transaksi, Integer.valueOf(Integer.MAX_VALUE));
+
+            ImageIcon icon2 = new ImageIcon("src\\assets\\icon_manage_member.png");
+            btn_manage_member.setIcon(icon2);
+            btn_manage_member.setForeground(new java.awt.Color(255, 255, 255));
+            btn_manage_member.setBounds(0, 190, 295, 35);
+            btn_manage_member.setVisible(true);
+            this.getLayeredPane().add(btn_manage_member, Integer.valueOf(Integer.MAX_VALUE));
 
         } else if (Objects.equals(Role_user, "kurir")) { // Logika Role User Kurir
 
@@ -223,6 +282,28 @@ public class DashboardPage extends JFrame {
                     username
                 );
 
+            }
+        });
+        btn_update_transaksi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new UpdateTransaksiPage(
+
+                );
+            }
+        });
+        btn_laporan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        btn_setting_app.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingPage(
+
+                );
             }
         });
     }

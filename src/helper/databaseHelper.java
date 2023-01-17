@@ -2,6 +2,7 @@ package helper;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class databaseHelper {
         return null;
     }
 
-    public String getTotalProsesSelesai(){
+    public String getTotalProsesSelesai() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateNow = sdf.format(new java.util.Date());
 
@@ -131,7 +132,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_selesai FROM tb_transaksi WHERE `status_proses` = \"Selesai\" and tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_selesai FROM tb_transaksi WHERE `status_proses` = \"Selesai\" and tgl_transaksi LIKE \"%" + dateNow + "%\";");
             String total = null;
             while (rs.next()) {
                 total = rs.getString("total_proses_selesai");
@@ -157,7 +158,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT SUM(jumlah_pembayaran) AS total_hari_ini FROM tb_transaksi WHERE tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            ResultSet rs = stmt.executeQuery("SELECT SUM(jumlah_pembayaran) AS total_hari_ini FROM tb_transaksi WHERE tgl_transaksi LIKE \"%" + dateNow + "%\";");
             String total = null;
             while (rs.next()) {
                 total = rs.getString("total_hari_ini");
@@ -448,12 +449,12 @@ public class databaseHelper {
         }
     }
 
-    public String getIdMember(String nama){
+    public String getIdMember(String nama) {
         Connection conn = null;
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member = '"+nama+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member = '" + nama + "'");
             while (rs.next()) {
                 return rs.getString("id");
             }
@@ -465,12 +466,12 @@ public class databaseHelper {
         return null;
     }
 
-    public String getIdPegawai(String nama){
+    public String getIdPegawai(String nama) {
         Connection conn = null;
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username = '"+nama+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username = '" + nama + "'");
             while (rs.next()) {
                 return rs.getString("id");
             }
@@ -543,7 +544,7 @@ public class databaseHelper {
         return data;
     }
 
-    public String getLastIdDetailTrx(){
+    public String getLastIdDetailTrx() {
         Connection conn = null;
         try {
             conn = getConnection();
@@ -568,7 +569,7 @@ public class databaseHelper {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("INSERT INTO `tb_transaksi` " +
                     "(`id`, `id_member`, `id_user`, `tgl_transaksi`, `status_proses`, `status_transaksi`, `total_pembayaran`, `jumlah_pembayaran`, `kembalian`, `id_detail`) VALUES " +
-                    "(NULL, '"+ id_member +"', '"+ id_eksekusi +"', current_timestamp(), 'Jemput', '"+ status_trx +"', '"+ total_bayar +"', '"+ jumlah_pembayaran +"','"+ kembalian +"', '"+ id_detail +"');");
+                    "(NULL, '" + id_member + "', '" + id_eksekusi + "', current_timestamp(), 'Jemput', '" + status_trx + "', '" + total_bayar + "', '" + jumlah_pembayaran + "','" + kembalian + "', '" + id_detail + "');");
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
@@ -599,7 +600,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO `tb_detail_transaksi` (`id_detail`, `id_paket`) VALUES ('"+ id_detail_trx +"', '"+ id_paket +"');");
+            stmt.executeUpdate("INSERT INTO `tb_detail_transaksi` (`id_detail`, `id_paket`) VALUES ('" + id_detail_trx + "', '" + id_paket + "');");
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
@@ -614,7 +615,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE `tb_member` SET `point` = '"+ point_baru +"' WHERE `tb_member`.`nama_member` = '"+ member +"';");
+            stmt.executeUpdate("UPDATE `tb_member` SET `point` = '" + point_baru + "' WHERE `tb_member`.`nama_member` = '" + member + "';");
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
@@ -631,7 +632,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_pengerjaan FROM tb_transaksi WHERE `status_proses` = \"Pengerjaan\" and tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_pengerjaan FROM tb_transaksi WHERE `status_proses` = \"Pengerjaan\" and tgl_transaksi LIKE \"%" + dateNow + "%\";");
             String total = null;
             while (rs.next()) {
                 total = rs.getString("total_proses_pengerjaan");
@@ -645,4 +646,131 @@ public class databaseHelper {
         }
         return null;
     }
+
+    public void getTransaksi(DefaultTableModel model1) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                    "SELECT DISTINCT tb_transaksi.id, tb_transaksi.status_transaksi, tb_member.nama_member, tb_transaksi.tgl_transaksi, tb_transaksi.status_proses, tb_transaksi.id_detail, tb_member.no_telp\n" +
+                            "FROM tb_paket\n" +
+                            "INNER JOIN tb_detail_transaksi ON tb_paket.id_paket = tb_detail_transaksi.id_paket\n" +
+                            "INNER JOIN tb_transaksi ON tb_detail_transaksi.id_detail = tb_transaksi.id_detail\n" +
+                            "INNER JOIN tb_member ON tb_transaksi.id_member = tb_member.id;");
+            while (rs.next()) {
+                model1.addRow(new Object[]{
+                        rs.getString("id"),
+                        rs.getString("status_transaksi"),
+                        rs.getString("nama_member"),
+                        rs.getString("tgl_transaksi"),
+                        rs.getString("status_proses"),
+                        rs.getString("id_detail"),
+                        rs.getString("no_telp")
+
+                });
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public void getDetailTrx(String data, DefaultTableModel model2) {
+        Connection conn = null;
+
+        model2.getDataVector().removeAllElements();
+        model2.fireTableDataChanged();
+
+
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT tb_paket.nama_paket, tb_paket.harga_paket, tb_paket.jenis_paket " +
+                    "FROM tb_paket " +
+                    "INNER JOIN tb_detail_transaksi ON tb_paket.id_paket = tb_detail_transaksi.id_paket " +
+                    "INNER JOIN tb_transaksi ON tb_detail_transaksi.id_detail = tb_transaksi.id_detail " +
+                    "INNER JOIN tb_member ON tb_transaksi.id_member = tb_member.id " +
+                    "WHERE tb_transaksi.id_detail = " + data + ";");
+            while (rs.next()) {
+                model2.addRow(new Object[]{
+                        rs.getString("nama_paket"),
+                        rs.getString("harga_paket"),
+                        rs.getString("jenis_paket")
+                });
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public void updateTrx(String id_trx, String status_transaksi, String status_proses) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE `tb_transaksi` SET `status_transaksi` = '" + status_transaksi + "', `status_proses` = '" + status_proses + "' WHERE `tb_transaksi`.`id` = '" + id_trx + "';");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public String getSettingApp(JCheckBox checkbox, JTextField textField) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_setting;");
+            while (rs.next()) {
+
+                checkbox.setSelected(rs.getString("active_send_whatsapp").equals("1"));
+                textField.setText(rs.getString("api_endpoint"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public void updateSettingApp(JCheckBox cb_aktif_whatsapp, JTextField txt_api_endpoint) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE `tb_setting` SET `active_send_whatsapp` = '" + (cb_aktif_whatsapp.isSelected() ? 1 : 0) + "', `api_endpoint` = '" + txt_api_endpoint.getText() + "';");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            close(conn);
+        }
+    }
+
+    public Boolean getActiveWhatsappSetting() {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_setting;");
+            while (rs.next()) {
+                return rs.getString("active_send_whatsapp").equals("1");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return false;
+    }
 }
+
+
