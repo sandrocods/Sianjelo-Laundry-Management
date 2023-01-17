@@ -22,7 +22,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="a0f43" class="javax.swing.JLabel" binding="lbl_cari_data">
         <constraints>

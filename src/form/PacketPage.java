@@ -23,16 +23,20 @@ public class PacketPage extends JFrame{
     private JLabel lbl_jenis;
     private JLabel lbl_harga;
     private JSpinner txt_id;
+    private JTextField txt_cari_data;
+    private JLabel lbl_cari_data;
+    private JButton btn_cari_data;
     private DefaultTableModel model;
 
     public void reset() {
         txt_nama.setText("");
         spn_harga.setValue(0);
+
+        txt_cari_data.setText("");
     }
     public PacketPage() {
         this.setVisible(true);
         this.setSize(1280, 800);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Sianjelau - Packet Page");
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -40,7 +44,7 @@ public class PacketPage extends JFrame{
         /*
          * Landing Image
          */
-        ImageIcon image = new ImageIcon("src\\assets\\global_background.png");
+        ImageIcon image = new ImageIcon("src\\assets\\manage_paket_page.png");
         JLabel label = new JLabel(image);
         label.setBounds(0, 0, image.getIconWidth(), image.getIconHeight());
         this.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));
@@ -127,13 +131,33 @@ public class PacketPage extends JFrame{
         this.getLayeredPane().add(btn_reset, Integer.valueOf(Integer.MAX_VALUE));
 
         /*
+         * Button Cari Data
+         */
+        btn_cari_data.setBounds(900, 220, 130, 25);
+        btn_cari_data.setForeground(new java.awt.Color(255, 255, 255));
+        btn_cari_data.setBorder(null);
+        this.getLayeredPane().add(btn_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
+         * Label Cari Data
+         */
+        lbl_cari_data = new JLabel("Cari Data");
+        lbl_cari_data.setBounds(820, 150, 100, 20);
+        this.getLayeredPane().add(lbl_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
+         * Text Field Cari Data
+         */
+        txt_cari_data.setBounds(820, 180, 300, 25);
+        txt_cari_data.setBorder(null);
+        this.getLayeredPane().add(txt_cari_data, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
          * Table
          */
-
         tblPaket.setBounds(130, 400, 1000, 300);
         tblPaket.setBorder(null);
         tblPaket.setDefaultEditor(Object.class, null);
-
         this.getLayeredPane().add(tblPaket, Integer.valueOf(Integer.MAX_VALUE));
 
         /*
@@ -174,6 +198,9 @@ public class PacketPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 reset();
+
+                databaseHelper db = new databaseHelper();
+                db.cariDataPaket(model, " ");
             }
         });
         tblPaket.addMouseListener(new MouseAdapter() {
@@ -214,7 +241,7 @@ public class PacketPage extends JFrame{
                 String nama = txt_nama.getText( );
                 String jenis = (String) cmb_jenis.getSelectedItem();
                 int harga = (int)spn_harga.getValue();
-                if (nama == "" | jenis == "" | harga == 0){
+                if (nama.equals("") || jenis.equals("") || harga == 0){
                     JOptionPane.showMessageDialog(null,"Pilih data terlebih dahulu!");
                 }else{
                     databaseHelper db = new databaseHelper();
@@ -230,6 +257,17 @@ public class PacketPage extends JFrame{
 
                     }
                 }
+            }
+        });
+        btn_cari_data.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String cari = txt_cari_data.getText();
+                databaseHelper db = new databaseHelper();
+                db.cariDataPaket(model, cari);
+
+
             }
         });
     }

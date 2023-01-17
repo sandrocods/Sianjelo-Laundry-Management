@@ -3,6 +3,8 @@ package helper;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 
 public class databaseHelper {
@@ -13,7 +15,7 @@ public class databaseHelper {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_sianjelo", "root", "");
         } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return conn;
     }
@@ -34,11 +36,7 @@ public class databaseHelper {
             conn = getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username = '" + username + "' AND password = '" + password + "'");
-            if (rs.next()) {
-                return true;
-            } else {
-                return false;
-            }
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -74,7 +72,7 @@ public class databaseHelper {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user");
             while (rs.next()) {
-                Object[] row = {rs.getString("id") ,rs.getString("username"), rs.getString("password"), rs.getString("full_name"), rs.getString("role")};
+                Object[] row = {rs.getString("id"), rs.getString("username"), rs.getString("password"), rs.getString("full_name"), rs.getString("role")};
                 model.addRow(row);
             }
 
@@ -105,7 +103,7 @@ public class databaseHelper {
         return null;
     }
 
-    public String getTotalMember(){
+    public String getTotalMember() {
         Connection conn = null;
         try {
             conn = getConnection();
@@ -114,6 +112,55 @@ public class databaseHelper {
             String total = null;
             while (rs.next()) {
                 total = rs.getString("total");
+            }
+            return total;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public String getTotalProsesSelesai(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateNow = sdf.format(new java.util.Date());
+
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_selesai FROM tb_transaksi WHERE `status_proses` = \"Selesai\" and tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            String total = null;
+            while (rs.next()) {
+                total = rs.getString("total_proses_selesai");
+            }
+            return total;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+
+    public String getPendapatanHarian() {
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateNow = sdf.format(new java.util.Date());
+
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT SUM(jumlah_pembayaran) AS total_hari_ini FROM tb_transaksi WHERE tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            String total = null;
+            while (rs.next()) {
+                total = rs.getString("total_hari_ini");
             }
             return total;
 
@@ -134,7 +181,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO `tb_user` (`id`, `username`, `password`, `full_name`, `role`, `created_at`) VALUES (NULL, '"+ username +"', '"+ password + "', '"+ full_name +"', '"+ role +"', current_timestamp())");
+            stmt.executeUpdate("INSERT INTO `tb_user` (`id`, `username`, `password`, `full_name`, `role`, `created_at`) VALUES (NULL, '" + username + "', '" + password + "', '" + full_name + "', '" + role + "', current_timestamp())");
 
             return true;
         } catch (SQLException e) {
@@ -150,7 +197,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE `tb_user` SET `username` = '"+ username +"', `password` = '"+ password +"', `full_name` = '"+ full_name +"', `role` = '"+ role +"' WHERE `tb_user`.`id` = "+ id +";");
+            stmt.executeUpdate("UPDATE `tb_user` SET `username` = '" + username + "', `password` = '" + password + "', `full_name` = '" + full_name + "', `role` = '" + role + "' WHERE `tb_user`.`id` = " + id + ";");
 
             return true;
         } catch (SQLException e) {
@@ -166,7 +213,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("DELETE FROM `tb_user` WHERE `tb_user`.`id` = "+ id +";");
+            stmt.executeUpdate("DELETE FROM `tb_user` WHERE `tb_user`.`id` = " + id + ";");
 
             return true;
         } catch (SQLException e) {
@@ -182,13 +229,13 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username LIKE '%"+ cari +"%' OR full_name LIKE '%"+ cari +"%'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username LIKE '%" + cari + "%' OR full_name LIKE '%" + cari + "%'");
 
             model.getDataVector().removeAllElements();
             model.fireTableDataChanged();
 
             while (rs.next()) {
-                Object[] row = {rs.getString("id") ,rs.getString("username"), rs.getString("password"), rs.getString("full_name"), rs.getString("role")};
+                Object[] row = {rs.getString("id"), rs.getString("username"), rs.getString("password"), rs.getString("full_name"), rs.getString("role")};
                 model.addRow(row);
             }
 
@@ -209,7 +256,7 @@ public class databaseHelper {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member");
             while (rs.next()) {
-                Object[] row = {rs.getString("id") ,rs.getString("nama_member"), rs.getString("alamat_member"), rs.getString("no_telp"), rs.getString("point")};
+                Object[] row = {rs.getString("id"), rs.getString("nama_member"), rs.getString("alamat_member"), rs.getString("no_telp"), rs.getString("point")};
                 model.addRow(row);
             }
 
@@ -219,18 +266,19 @@ public class databaseHelper {
             close(conn);
         }
     }
+
     public void cariDataMember(DefaultTableModel model, String cari) {
         Connection conn = null;
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member LIKE '%"+ cari +"%' OR alamat_member LIKE '%"+ cari +"%'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member LIKE '%" + cari + "%' OR alamat_member LIKE '%" + cari + "%'");
 
             model.getDataVector().removeAllElements();
             model.fireTableDataChanged();
 
             while (rs.next()) {
-                Object[] row = {rs.getString("id") ,rs.getString("nama_member"), rs.getString("alamat_member"), rs.getString("no_telp"), rs.getString("point")};
+                Object[] row = {rs.getString("id"), rs.getString("nama_member"), rs.getString("alamat_member"), rs.getString("no_telp"), rs.getString("point")};
                 model.addRow(row);
             }
 
@@ -247,7 +295,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO `tb_member` (`id`, `nama_member`, `alamat_member`, `no_telp`, `point` , `created_at`) VALUES (NULL, '"+ nama_member +"', '"+ alamat_member +"', '"+ no_telp +"', '"+ point +"', current_timestamp())");
+            stmt.executeUpdate("INSERT INTO `tb_member` (`id`, `nama_member`, `alamat_member`, `no_telp`, `point` , `created_at`) VALUES (NULL, '" + nama_member + "', '" + alamat_member + "', '" + no_telp + "', '" + point + "', current_timestamp())");
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -263,7 +311,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE `tb_member` SET `nama_member` = '"+ nama_member +"', `alamat_member` = '"+ alamat_member +"', `no_telp` = '"+ no_telp +"', `point` = '"+ point +"' WHERE `tb_member`.`id` = "+ id +";");
+            stmt.executeUpdate("UPDATE `tb_member` SET `nama_member` = '" + nama_member + "', `alamat_member` = '" + alamat_member + "', `no_telp` = '" + no_telp + "', `point` = '" + point + "' WHERE `tb_member`.`id` = " + id + ";");
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -279,7 +327,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("DELETE FROM `tb_member` WHERE `tb_member`.`id` = "+ id +";");
+            stmt.executeUpdate("DELETE FROM `tb_member` WHERE `tb_member`.`id` = " + id + ";");
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -296,7 +344,7 @@ public class databaseHelper {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM tb_paket");
             while (rs.next()) {
-                Object[] row = {rs.getString("id_paket") ,rs.getString("nama_paket"), rs.getString("jenis_paket"), rs.getString("harga_paket")};
+                Object[] row = {rs.getString("id_paket"), rs.getString("nama_paket"), rs.getString("jenis_paket"), rs.getString("harga_paket")};
                 model.addRow(row);
             }
 
@@ -306,6 +354,7 @@ public class databaseHelper {
             close(conn);
         }
     }
+
     public boolean addDataPaket(int id, String nama, String jenis, int harga) {
         Connection conn = null;
         System.out.println("INSERT INTO tb_user VALUES ('NULL," + nama + "', '" + jenis + "', '" + harga + "')");
@@ -322,12 +371,13 @@ public class databaseHelper {
         }
         return false;
     }
+
     public boolean deleteDataPaket(String id) {
         Connection conn = null;
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("DELETE FROM `tb_paket` WHERE `tb_paket`.`id_paket` = "+ id +";");
+            stmt.executeUpdate("DELETE FROM `tb_paket` WHERE `tb_paket`.`id_paket` = " + id + ";");
 
             return true;
         } catch (SQLException e) {
@@ -337,21 +387,262 @@ public class databaseHelper {
         }
         return false;
     }
-    public boolean updateDataPaket( String id,String nama, String jenis, int harga){
+
+    public boolean updateDataPaket(String id, String nama, String jenis, int harga) {
         Connection conn = null;
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE tb_paket SET nama_paket = '"+ nama+ "', jenis_paket = '"+jenis+"', harga_paket = '"+harga+"' WHERE id_paket = '"+id+"';");
+            stmt.executeUpdate("UPDATE tb_paket SET nama_paket = '" + nama + "', jenis_paket = '" + jenis + "', harga_paket = '" + harga + "' WHERE id_paket = '" + id + "';");
             return true;
-        }catch (SQLException ex) {
-            ex.printStackTrace( ) ;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
-        }finally {
+        } finally {
             databaseHelper.close(conn);
         }
         return false;
     }
 
+    public void cariDataPaket(DefaultTableModel model, String cari) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_paket WHERE nama_paket LIKE '%" + cari + "%'");
 
+            model.getDataVector().removeAllElements();
+            model.fireTableDataChanged();
+
+            while (rs.next()) {
+                Object[] row = {rs.getString("id_paket"), rs.getString("nama_paket"), rs.getString("jenis_paket"), rs.getString("harga_paket")};
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+
+    }
+
+
+    public void add_member_combobox(JComboBox combobox) {
+        Connection conn = null;
+        try {
+            combobox.removeAllItems();
+            combobox.addItem("-- Pilih Member --");
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member");
+            while (rs.next()) {
+                combobox.addItem(rs.getString("nama_member"));
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public String getIdMember(String nama){
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member = '"+nama+"'");
+            while (rs.next()) {
+                return rs.getString("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public String getIdPegawai(String nama){
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_user WHERE username = '"+nama+"'");
+            while (rs.next()) {
+                return rs.getString("id");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public String getPointMember(String nama_member) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_member WHERE nama_member = '" + nama_member + "'");
+            while (rs.next()) {
+                return rs.getString("point");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public void add_data_paket_combobox(JComboBox combobox) {
+        Connection conn = null;
+        try {
+            combobox.removeAllItems();
+            combobox.addItem("-- Pilih Paket --");
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_paket");
+            while (rs.next()) {
+                combobox.addItem(rs.getString("nama_paket"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+
+    }
+
+    // make function return array assosiative using arraylist
+    public ArrayList<String> getHargaPaket(String nama_paket) {
+        Connection conn = null;
+        ArrayList<String> data = new ArrayList<String>();
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_paket WHERE nama_paket = '" + nama_paket + "'");
+            while (rs.next()) {
+                data.add(rs.getString("id_paket"));
+                data.add(rs.getString("nama_paket"));
+                data.add(rs.getString("jenis_paket"));
+                data.add(rs.getString("harga_paket"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return data;
+    }
+
+    public String getLastIdDetailTrx(){
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id_detail FROM tb_detail_transaksi ORDER BY id_detail DESC LIMIT 1");
+            while (rs.next()) {
+                return rs.getString("id_detail");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+
+    public void insertTransaksi(String id_trx, String id_member, String id_eksekusi, String status_trx, String total_bayar, String jumlah_pembayaran, String kembalian, String id_detail) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO `tb_transaksi` " +
+                    "(`id`, `id_member`, `id_user`, `tgl_transaksi`, `status_proses`, `status_transaksi`, `total_pembayaran`, `jumlah_pembayaran`, `kembalian`, `id_detail`) VALUES " +
+                    "(NULL, '"+ id_member +"', '"+ id_eksekusi +"', current_timestamp(), 'Jemput', '"+ status_trx +"', '"+ total_bayar +"', '"+ jumlah_pembayaran +"','"+ kembalian +"', '"+ id_detail +"');");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public String getIdPaketByName(String nama_paket) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_paket WHERE nama_paket = '" + nama_paket + "'");
+            while (rs.next()) {
+                return rs.getString("id_paket");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
+
+    public void insertDetailTransaksi(String id_detail_trx, String id_paket) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO `tb_detail_transaksi` (`id_detail`, `id_paket`) VALUES ('"+ id_detail_trx +"', '"+ id_paket +"');");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+
+    public void updatePointMember(String member, int point_baru) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE `tb_member` SET `point` = '"+ point_baru +"' WHERE `tb_member`.`nama_member` = '"+ member +"';");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
+    public String getTotalProsesPengerjaan() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateNow = sdf.format(new java.util.Date());
+
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(`status_proses`) as total_proses_pengerjaan FROM tb_transaksi WHERE `status_proses` = \"Pengerjaan\" and tgl_transaksi LIKE \"%"+ dateNow +"%\";");
+            String total = null;
+            while (rs.next()) {
+                total = rs.getString("total_proses_pengerjaan");
+            }
+            return total;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
 }

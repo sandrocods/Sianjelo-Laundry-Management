@@ -3,7 +3,6 @@ package form;
 import helper.databaseHelper;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
@@ -20,6 +19,10 @@ public class DashboardPage extends JFrame {
     private JButton btn_manage_member;
     private JLabel lbl_total_member;
     private JButton btn_manage_paket;
+    private JButton btn_transaksi;
+    private JLabel lbl_total_pendapatan;
+    private JLabel lbl_proses_selesai;
+    private JLabel lbl_proses_pengerjaan;
     private JButton btn_test;
 
     public DashboardPage(String username, String password) {
@@ -85,12 +88,23 @@ public class DashboardPage extends JFrame {
             /*
              * Button Manage Paket Aktif
              */
-            ImageIcon icon3 = new ImageIcon("src\\assets\\icon_manage_member.png");
+            ImageIcon icon3 = new ImageIcon("src\\assets\\icon_manage_paket.png");
             btn_manage_paket.setIcon(icon3);
             btn_manage_paket.setForeground(new java.awt.Color(255, 255, 255));
             btn_manage_paket.setBounds(0, 245, 295, 35);
             btn_manage_paket.setVisible(true);
             this.getLayeredPane().add(btn_manage_paket, Integer.valueOf(Integer.MAX_VALUE));
+
+            /*
+             * Button Transaksi Aktif
+             */
+            ImageIcon icon4 = new ImageIcon("src\\assets\\icon_transaksi.png");
+            btn_transaksi.setIcon(icon4);
+            btn_transaksi.setForeground(new java.awt.Color(255, 255, 255));
+            btn_transaksi.setBounds(0, 300, 295, 35);
+            btn_transaksi.setVisible(true);
+            this.getLayeredPane().add(btn_transaksi, Integer.valueOf(Integer.MAX_VALUE));
+
 
 
         } else if (Objects.equals(Role_user, "karyawan")) { // Logika Role User Karyawan
@@ -119,6 +133,9 @@ public class DashboardPage extends JFrame {
             while (true) {
                 lbl_total_user.setText(db.getTotalUser());
                 lbl_total_member.setText(db.getTotalMember());
+                lbl_total_pendapatan.setText(db.getPendapatanHarian());
+                lbl_proses_selesai.setText(db.getTotalProsesSelesai());
+                lbl_proses_pengerjaan.setText(db.getTotalProsesPengerjaan());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -128,6 +145,21 @@ public class DashboardPage extends JFrame {
         });
         thread.start();
 
+        /*
+         * lbl_proses_selesai
+         */
+        lbl_proses_selesai.setFont(new java.awt.Font("", 0, 70));
+        lbl_proses_selesai.setBounds(740, 390, 100, 100);
+        lbl_proses_selesai.setForeground(new java.awt.Color(41, 65, 114));
+        this.getLayeredPane().add(lbl_proses_selesai, Integer.valueOf(Integer.MAX_VALUE));
+
+        /*
+         * lbl_proses_pengerjaan
+         */
+        lbl_proses_pengerjaan.setFont(new java.awt.Font("", 0, 70));
+        lbl_proses_pengerjaan.setBounds(480, 390, 100, 100);
+        lbl_proses_pengerjaan.setForeground(new java.awt.Color(41, 65, 114));
+        this.getLayeredPane().add(lbl_proses_pengerjaan, Integer.valueOf(Integer.MAX_VALUE));
 
 
 
@@ -149,6 +181,12 @@ public class DashboardPage extends JFrame {
         lbl_total_member.setFont(new java.awt.Font("", 0, 70));
         lbl_total_member.setForeground(new java.awt.Color(41, 65, 114));
         this.getLayeredPane().add(lbl_total_member, Integer.valueOf(Integer.MAX_VALUE));
+
+
+        lbl_total_pendapatan.setBounds(740, 80, 300, 300);
+        lbl_total_pendapatan.setFont(new java.awt.Font("", 0, 40));
+        lbl_total_pendapatan.setForeground(new java.awt.Color(41, 65, 114));
+        this.getLayeredPane().add(lbl_total_pendapatan, Integer.valueOf(Integer.MAX_VALUE));
 
         btn_logout_user.addActionListener(new ActionListener() {
             @Override
@@ -175,6 +213,15 @@ public class DashboardPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new PacketPage();
+
+            }
+        });
+        btn_transaksi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new TransaksiPage(
+                    username
+                );
 
             }
         });
