@@ -677,6 +677,41 @@ public class databaseHelper {
         }
     }
 
+    public void getTransaksibyDate(DefaultTableModel model1, String data_awal, String data_akhir) {
+        Connection conn = null;
+
+        model1.fireTableDataChanged();
+        model1.setRowCount(0);
+
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                    "SELECT DISTINCT tb_transaksi.id, tb_transaksi.status_transaksi, tb_member.nama_member, tb_transaksi.tgl_transaksi, tb_transaksi.status_proses, tb_transaksi.id_detail, tb_member.no_telp\n" +
+                            "FROM tb_paket\n" +
+                            "INNER JOIN tb_detail_transaksi ON tb_paket.id_paket = tb_detail_transaksi.id_paket\n" +
+                            "INNER JOIN tb_transaksi ON tb_detail_transaksi.id_detail = tb_transaksi.id_detail\n" +
+                            "INNER JOIN tb_member ON tb_transaksi.id_member = tb_member.id\n" +
+                            "WHERE tb_transaksi.tgl_transaksi BETWEEN '" + data_awal + "' AND '" + data_akhir + "';");
+            while (rs.next()) {
+                model1.addRow(new Object[]{
+                        rs.getString("id"),
+                        rs.getString("status_transaksi"),
+                        rs.getString("nama_member"),
+                        rs.getString("tgl_transaksi"),
+                        rs.getString("status_proses"),
+                        rs.getString("id_detail"),
+                        rs.getString("no_telp")
+
+                });
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+    }
+
     public void getDetailTrx(String data, DefaultTableModel model2) {
         Connection conn = null;
 

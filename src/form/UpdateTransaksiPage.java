@@ -227,19 +227,19 @@ public class UpdateTransaksiPage extends JFrame {
                             String harga_paket = tb_detail_trx.getModel().getValueAt(i, 1).toString();
                             String jenis_paket = tb_detail_trx.getModel().getValueAt(i, 2).toString();
 
-                            detail_pesanan  +=
-                                                "Nama Paket : " + nama_paket + "\n"
-                                            +   "Harga Paket : " + harga_paket + "\n"
-                                            +   "Jenis Paket : " + jenis_paket + "\n\n";
+                            detail_pesanan +=
+                                    "Nama Paket : " + nama_paket + "\n"
+                                            + "Harga Paket : " + harga_paket + "\n"
+                                            + "Jenis Paket : " + jenis_paket + "\n\n";
 
                         }
 
                         whatsappHelper helper = new whatsappHelper();
                         helper.sendMessage(
-                                no_telepon.replace("0", "62"),
+                                no_telepon.replaceFirst("0", "62"),
                                 comboBox2.getSelectedItem().toString(),
                                 textField2.getText(),
-                                no_telepon.replace("0", "62"),
+                                no_telepon.replaceFirst("0", "62"),
                                 detail_pesanan
                         );
                     }

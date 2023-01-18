@@ -33,7 +33,7 @@ public class ManageMemberPage extends JFrame {
     private DefaultTableModel model;
 
 
-    public void kondisiAwal(){
+    public void kondisiAwal() {
 
 
         txt_id.setEnabled(false);
@@ -41,8 +41,6 @@ public class ManageMemberPage extends JFrame {
         txta_alamat_member.setEnabled(false);
         txt_no_telp.setEnabled(false);
         txt_poin_member.setEnabled(false);
-
-
 
 
         btn_tambah_member.setEnabled(true);
@@ -66,7 +64,7 @@ public class ManageMemberPage extends JFrame {
 
     }
 
-    public void aktif(){
+    public void aktif() {
 
         txt_id.setEnabled(true);
         txt_nama_member.setEnabled(true);
@@ -262,8 +260,10 @@ public class ManageMemberPage extends JFrame {
         btn_tambah_member.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (btn_tambah_member.getText().equals("Tambah Data")){
+                if (btn_tambah_member.getText().equals("Tambah Data")) {
+                    int newId = 0;
                     kondisiAwal();
+
                     btn_tambah_member.setText("Simpan");
                     btn_delete_member.setEnabled(false);
                     btn_edit_member.setEnabled(false);
@@ -272,9 +272,14 @@ public class ManageMemberPage extends JFrame {
                     txt_id.setEnabled(false);
                     txt_nama_member.requestFocus();
 
-                    String oldId = table1.getValueAt(table1.getRowCount()-1, 0).toString();
-                    int newId = Integer.parseInt(oldId) + 1;
-                    txt_id.setText(String.valueOf(newId));
+                    try{
+                        String oldId = table1.getValueAt(table1.getRowCount() - 1, 0).toString();
+                        newId = Integer.parseInt(oldId) + 1;
+                        txt_id.setText(String.valueOf(newId));
+                    } catch (Exception ex){
+                        newId = 1;
+                        txt_id.setText(String.valueOf(newId));
+                    }
 
                 } else {
                     String id = txt_id.getText();
@@ -283,11 +288,11 @@ public class ManageMemberPage extends JFrame {
                     String no_telp = txt_no_telp.getText();
                     String poin = txt_poin_member.getText();
 
-                    if (id.isEmpty() || nama.isEmpty() || alamat.isEmpty() || no_telp.isEmpty() || poin.isEmpty()){
+                    if (nama.isEmpty() || alamat.isEmpty() || no_telp.isEmpty() || poin.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
                     } else {
                         databaseHelper db = new databaseHelper();
-                        if (db.addDataMember(nama, alamat, no_telp, poin)){
+                        if (db.addDataMember(nama, alamat, no_telp, poin)) {
                             JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan");
                             model.addRow(new Object[]{id, nama, alamat, no_telp, poin});
                             kondisiAwal();
@@ -303,7 +308,7 @@ public class ManageMemberPage extends JFrame {
         btn_edit_member.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (btn_edit_member.getText().equals("Edit Data")){
+                if (btn_edit_member.getText().equals("Edit Data")) {
                     btn_edit_member.setText("Simpan");
                     btn_delete_member.setEnabled(false);
                     btn_tambah_member.setEnabled(false);
@@ -318,11 +323,11 @@ public class ManageMemberPage extends JFrame {
                     String no_telp = txt_no_telp.getText();
                     String poin = txt_poin_member.getText();
 
-                    if (id.isEmpty() || nama.isEmpty() || alamat.isEmpty() || no_telp.isEmpty() || poin.isEmpty()){
+                    if (id.isEmpty() || nama.isEmpty() || alamat.isEmpty() || no_telp.isEmpty() || poin.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
                     } else {
                         databaseHelper db = new databaseHelper();
-                        if (db.editDataMember(id, nama, alamat, no_telp, poin)){
+                        if (db.editDataMember(id, nama, alamat, no_telp, poin)) {
                             JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                             model.setValueAt(id, table1.getSelectedRow(), 0);
                             model.setValueAt(nama, table1.getSelectedRow(), 1);
@@ -343,7 +348,7 @@ public class ManageMemberPage extends JFrame {
         btn_delete_member.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(btn_delete_member.getText().equals("Hapus Data")){
+                if (btn_delete_member.getText().equals("Hapus Data")) {
                     btn_delete_member.setText("Hapus");
                     btn_edit_member.setEnabled(false);
                     btn_tambah_member.setEnabled(false);
@@ -355,7 +360,7 @@ public class ManageMemberPage extends JFrame {
                 } else {
                     String id = txt_id.getText();
                     databaseHelper db = new databaseHelper();
-                    if (db.deleteDataMember(id)){
+                    if (db.deleteDataMember(id)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
                         model.removeRow(table1.getSelectedRow());
                         kondisiAwal();
@@ -375,7 +380,7 @@ public class ManageMemberPage extends JFrame {
                 databaseHelper db = new databaseHelper();
                 db.cariDataMember(model, " ");
 
-                if (btn_batal.getText().equals("Batal")){
+                if (btn_batal.getText().equals("Batal")) {
                     kondisiAwal();
                 } else {
                     kondisiAwal();

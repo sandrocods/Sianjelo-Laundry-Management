@@ -46,7 +46,7 @@ public class TransaksiPage extends JFrame {
 
     private DefaultTableModel model;
 
-    public void kondisi_awal(){
+    public void kondisi_awal() {
         txt_id_trx.setText("");
         txt_tgl_trx.setText("");
         txt_jenis_paket.setText("");
@@ -78,7 +78,6 @@ public class TransaksiPage extends JFrame {
 
         cb_pilih_member.setSelectedIndex(0);
         cb_pilih_paket.setSelectedIndex(0);
-
 
 
     }
@@ -389,20 +388,6 @@ public class TransaksiPage extends JFrame {
         this.getLayeredPane().add(btn_simpan, Integer.valueOf(Integer.MAX_VALUE));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         cb_pilih_member.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -483,7 +468,7 @@ public class TransaksiPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String member = cb_pilih_member.getSelectedItem().toString();
 
-                if (txt_point_member.equals("0")){
+                if (txt_point_member.equals("0")) {
                     JOptionPane.showMessageDialog(null, "Point Member Tidak Mencukupi");
                 }
 
@@ -496,7 +481,7 @@ public class TransaksiPage extends JFrame {
                     if (point > total) {
                         JOptionPane.showMessageDialog(null, "Point Tidak Mencukupi");
                     } else {
-                        int point_baru = point - point;
+                        int point_baru = 0;
                         databaseHelper db = new databaseHelper();
 
                         if (lbl_val_potongan_point.getText().equals("0")) {
@@ -534,15 +519,15 @@ public class TransaksiPage extends JFrame {
 
                 System.out.println(
                         "id_trx : " + id_trx + "\n" +
-                        "id_member : " + id_member + "\n" +
-                        "id_eksekusi : " + id_eksekusi + "\n" +
-                        "status_trx : " + status_trx + "\n" +
-                        "total_bayar : " + total_bayar + "\n" +
-                        "jumlah_pembayaran : " + jumlah_pembayaran + "\n" +
-                        "id_detail_trx : " + id_detail_trx + "\n"
+                                "id_member : " + id_member + "\n" +
+                                "id_eksekusi : " + id_eksekusi + "\n" +
+                                "status_trx : " + status_trx + "\n" +
+                                "total_bayar : " + total_bayar + "\n" +
+                                "jumlah_pembayaran : " + jumlah_pembayaran + "\n" +
+                                "id_detail_trx : " + id_detail_trx + "\n"
                 );
 
-                if (lbl_val_kembalian.getText().equals("-")){
+                if (lbl_val_kembalian.getText().equals("-")) {
                     JOptionPane.showMessageDialog(null, "Jumlah Pembayaran Kurang");
                 }
 
@@ -560,7 +545,7 @@ public class TransaksiPage extends JFrame {
                     txt_jumlah_bayar.requestFocus();
 
                 } else {
-                    db.insertTransaksi(id_trx, id_member, id_eksekusi, status_trx, total_bayar, jumlah_pembayaran, lbl_kembalian , id_detail_trx);
+                    db.insertTransaksi(id_trx, id_member, id_eksekusi, status_trx, total_bayar, jumlah_pembayaran, lbl_kembalian, id_detail_trx);
                     for (int i = 0; i < table1.getRowCount(); i++) {
                         String id_paket = db.getIdPaketByName(table1.getValueAt(i, 1).toString());
                         db.insertDetailTransaksi(id_detail_trx, id_paket);
@@ -578,7 +563,6 @@ public class TransaksiPage extends JFrame {
                     kondisi_awal();
 
                 }
-
 
 
             }
@@ -607,13 +591,6 @@ public class TransaksiPage extends JFrame {
 
 
         table1.setRowHeight(30);
-
-
-
-
-
-
-
 
 
     }

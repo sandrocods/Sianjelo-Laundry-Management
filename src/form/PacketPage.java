@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PacketPage extends JFrame{
+public class PacketPage extends JFrame {
     private JPanel PacketPane;
     private JTextField txt_nama;
     private JButton btn_tambah;
@@ -34,6 +34,7 @@ public class PacketPage extends JFrame{
 
         txt_cari_data.setText("");
     }
+
     public PacketPage() {
         this.setVisible(true);
         this.setSize(1280, 800);
@@ -171,21 +172,28 @@ public class PacketPage extends JFrame{
         btn_tambah.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int newId = 0;
                 String nama = txt_nama.getText();
                 String jenis = (String) cmb_jenis.getSelectedItem();
-                int harga = (int)spn_harga.getValue();
+                int harga = (int) spn_harga.getValue();
 
-                String oldId = tblPaket.getValueAt(tblPaket.getRowCount() - 1, 0).toString();
-                int newId = Integer.parseInt(oldId) + 1;
+               try{
+                   String oldId = tblPaket.getValueAt(tblPaket.getRowCount() - 1, 0).toString();
+                   newId = Integer.parseInt(oldId) + 1;
+               } catch (Exception ex){
+                   newId = 1;
+                }
 
-                if (nama.equals("") || jenis.equals("") ) {
+
+
+
+                if (nama.equals("") || jenis.equals("")) {
                     JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
                 } else {
                     databaseHelper db = new databaseHelper();
-                    if (db.addDataPaket(newId , nama, jenis, harga)) {
+                    if (db.addDataPaket(newId, nama, jenis, harga)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
-                        model.addRow(new Object[]{newId,nama,jenis, harga});
+                        model.addRow(new Object[]{newId, nama, jenis, harga});
                         reset();
                     } else {
                         JOptionPane.showMessageDialog(null, "Data gagal disimpan");
@@ -207,12 +215,12 @@ public class PacketPage extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String id = tblPaket.getValueAt(tblPaket.getSelectedRow(),0).toString();
-                txt_nama.setText(tblPaket.getValueAt(tblPaket.getSelectedRow(),1).toString());
-                String jenis = tblPaket.getValueAt(tblPaket.getSelectedRow(),2).toString();
+                String id = tblPaket.getValueAt(tblPaket.getSelectedRow(), 0).toString();
+                txt_nama.setText(tblPaket.getValueAt(tblPaket.getSelectedRow(), 1).toString());
+                String jenis = tblPaket.getValueAt(tblPaket.getSelectedRow(), 2).toString();
                 cmb_jenis.setSelectedItem(jenis);
 
-                int harga = Integer.parseInt(tblPaket.getValueAt(tblPaket.getSelectedRow(),3).toString());
+                int harga = Integer.parseInt(tblPaket.getValueAt(tblPaket.getSelectedRow(), 3).toString());
                 spn_harga.setValue(harga);
             }
         });
@@ -220,9 +228,9 @@ public class PacketPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 int jawab;
-                if ((jawab = JOptionPane.showConfirmDialog(null, "Ingin menghapus data?", "konfirmasi", JOptionPane.YES_NO_OPTION)) == 0){
+                if ((jawab = JOptionPane.showConfirmDialog(null, "Ingin menghapus data?", "konfirmasi", JOptionPane.YES_NO_OPTION)) == 0) {
                     databaseHelper db = new databaseHelper();
-                    String id = tblPaket.getValueAt(tblPaket.getSelectedRow(),0).toString();
+                    String id = tblPaket.getValueAt(tblPaket.getSelectedRow(), 0).toString();
                     if (db.deleteDataPaket(id)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
                         model.removeRow(tblPaket.getSelectedRow());
@@ -237,22 +245,22 @@ public class PacketPage extends JFrame{
         btn_update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String id = tblPaket.getValueAt(tblPaket.getSelectedRow(),0).toString();
-                String nama = txt_nama.getText( );
+                String id = tblPaket.getValueAt(tblPaket.getSelectedRow(), 0).toString();
+                String nama = txt_nama.getText();
                 String jenis = (String) cmb_jenis.getSelectedItem();
-                int harga = (int)spn_harga.getValue();
-                if (nama.equals("") || jenis.equals("") || harga == 0){
-                    JOptionPane.showMessageDialog(null,"Pilih data terlebih dahulu!");
-                }else{
+                int harga = (int) spn_harga.getValue();
+                if (nama.equals("") || jenis.equals("") || harga == 0) {
+                    JOptionPane.showMessageDialog(null, "Pilih data terlebih dahulu!");
+                } else {
                     databaseHelper db = new databaseHelper();
-                    if (db.updateDataPaket(id, nama,jenis,harga)) {
+                    if (db.updateDataPaket(id, nama, jenis, harga)) {
                         JOptionPane.showMessageDialog(null, "Data berhasil diubah");
                         model.setValueAt(nama, tblPaket.getSelectedRow(), 1);
                         model.setValueAt(jenis, tblPaket.getSelectedRow(), 2);
                         model.setValueAt(harga, tblPaket.getSelectedRow(), 3);
 
                         reset();
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(null, "Data gagal diubah");
 
                     }
@@ -274,12 +282,12 @@ public class PacketPage extends JFrame{
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        model = new DefaultTableModel() ;
+        model = new DefaultTableModel();
         tblPaket = new JTable(model);
-        model.addColumn( "Id" ) ;
-        model.addColumn( "Nama" ) ;
-        model.addColumn( "Jenis Paket" ) ;
-        model.addColumn( "Harga (Rp)" ) ;
+        model.addColumn("Id");
+        model.addColumn("Nama");
+        model.addColumn("Jenis Paket");
+        model.addColumn("Harga (Rp)");
 
         databaseHelper db = new databaseHelper();
         db.getDataPaket(model);

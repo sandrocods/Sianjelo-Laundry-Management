@@ -10,7 +10,6 @@ import java.util.Objects;
 public class DashboardPage extends JFrame {
 
 
-
     private JPanel panel1;
     private JLabel lbl_username;
     private JButton btn_manage_user;
@@ -139,8 +138,6 @@ public class DashboardPage extends JFrame {
             this.getLayeredPane().add(btn_setting_app, Integer.valueOf(Integer.MAX_VALUE));
 
 
-
-
         } else if (Objects.equals(Role_user, "karyawan")) { // Logika Role User Karyawan
             /*
              * Button Transaksi Aktif
@@ -179,7 +176,7 @@ public class DashboardPage extends JFrame {
         btn_logout_user.setForeground(new java.awt.Color(255, 255, 255));
         btn_logout_user.setBounds(0, 700, 295, 35);
         btn_logout_user.setVisible(true);
-        this.getLayeredPane().add( btn_logout_user, Integer.valueOf(Integer.MAX_VALUE));
+        this.getLayeredPane().add(btn_logout_user, Integer.valueOf(Integer.MAX_VALUE));
 
 
 
@@ -279,7 +276,7 @@ public class DashboardPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new TransaksiPage(
-                    username
+                        username
                 );
 
             }
@@ -295,6 +292,10 @@ public class DashboardPage extends JFrame {
         btn_laporan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                new ReportPage(
+
+                );
 
             }
         });

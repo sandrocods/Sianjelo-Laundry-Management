@@ -61,9 +61,6 @@ public class ManageUserPage extends JFrame {
         btn_batal.setText("Batal");
 
 
-
-
-
     }
 
     public void aktif() {
@@ -265,8 +262,6 @@ public class ManageUserPage extends JFrame {
                     txt_id.setText(String.valueOf(newId));
 
 
-
-
                 } else {
                     String id = txt_id.getText();
                     String username = txt_username.getText();
@@ -299,8 +294,6 @@ public class ManageUserPage extends JFrame {
                     databaseHelper db = new databaseHelper();
                     db.cariDataUser(model, "");
                     kondisiAwal();
-
-
 
 
                 }
@@ -403,7 +396,7 @@ public class ManageUserPage extends JFrame {
                     txt_username.requestFocus();
 
                     String id = txt_id.getText();
-                    if (id.equals("")){
+                    if (id.equals("")) {
                         JOptionPane.showMessageDialog(null, "Data tidak boleh kosong");
                     } else {
                         txt_id.setText(table1.getValueAt(table1.getSelectedRow(), 0).toString());
@@ -434,11 +427,6 @@ public class ManageUserPage extends JFrame {
                     }
 
 
-
-
-
-
-
                 }
             }
         });
@@ -451,7 +439,6 @@ public class ManageUserPage extends JFrame {
             }
         });
     }
-
 
 
     private void createUIComponents() {
@@ -469,8 +456,6 @@ public class ManageUserPage extends JFrame {
 
         databaseHelper db = new databaseHelper();
         db.getDataUser(model);
-
-
 
 
     }

@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Tugas Besar:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Tugas_Besar_jar</output-path>
+    <root id="archive" name="Tugas Besar.jar">
+      <element id="module-output" name="Tugas Besar" />
+      <element id="extracted-dir" path="E:/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/assets" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/LGoodDatePicker-11.2.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

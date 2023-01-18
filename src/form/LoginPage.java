@@ -130,7 +130,6 @@ public class LoginPage extends JFrame {
                         );
 
 
-
                     } else {
                         JOptionPane.showMessageDialog(null, "Login Gagal Pastikan Username & Password anda benar", "Login - Error", JOptionPane.ERROR_MESSAGE);
                         txt_username.setText("");
