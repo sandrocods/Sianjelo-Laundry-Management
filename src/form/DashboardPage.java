@@ -5,6 +5,8 @@ import helper.databaseHelper;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DashboardPage extends JFrame {
@@ -185,11 +187,14 @@ public class DashboardPage extends JFrame {
          */
 
         databaseHelper db = new databaseHelper();
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+        nf.setMaximumFractionDigits(0);
         Thread thread = new Thread(() -> {
             while (true) {
                 lbl_total_user.setText(db.getTotalUser());
                 lbl_total_member.setText(db.getTotalMember());
-                lbl_total_pendapatan.setText(db.getPendapatanHarian());
+                int pendapatan = Integer.parseInt(db.getPendapatanHarian());
+                lbl_total_pendapatan.setText(nf.format(pendapatan));
                 lbl_proses_selesai.setText(db.getTotalProsesSelesai());
                 lbl_proses_pengerjaan.setText(db.getTotalProsesPengerjaan());
                 try {
@@ -240,7 +245,7 @@ public class DashboardPage extends JFrame {
 
 
         lbl_total_pendapatan.setBounds(740, 80, 300, 300);
-        lbl_total_pendapatan.setFont(new java.awt.Font("", 0, 40));
+        lbl_total_pendapatan.setFont(new java.awt.Font("", 0, 33));
         lbl_total_pendapatan.setForeground(new java.awt.Color(41, 65, 114));
         this.getLayeredPane().add(lbl_total_pendapatan, Integer.valueOf(Integer.MAX_VALUE));
 
