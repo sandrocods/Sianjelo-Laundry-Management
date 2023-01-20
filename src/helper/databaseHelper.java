@@ -722,7 +722,7 @@ public class databaseHelper {
         try {
             conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT tb_paket.nama_paket, tb_paket.harga_paket, tb_paket.jenis_paket " +
+            ResultSet rs = stmt.executeQuery("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_paket.harga_paket, tb_paket.jenis_paket " +
                     "FROM tb_paket " +
                     "INNER JOIN tb_detail_transaksi ON tb_paket.id_paket = tb_detail_transaksi.id_paket " +
                     "INNER JOIN tb_transaksi ON tb_detail_transaksi.id_detail = tb_transaksi.id_detail " +
@@ -730,9 +730,10 @@ public class databaseHelper {
                     "WHERE tb_transaksi.id_detail = " + data + ";");
             while (rs.next()) {
                 model2.addRow(new Object[]{
+                        rs.getString("id_paket"),
                         rs.getString("nama_paket"),
-                        rs.getString("harga_paket"),
-                        rs.getString("jenis_paket")
+                        rs.getString("jenis_paket"),
+                        rs.getString("harga_paket")
                 });
             }
         } catch (SQLException e) {

@@ -3,6 +3,7 @@ package form;
 import helper.databaseHelper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -193,8 +194,14 @@ public class DashboardPage extends JFrame {
             while (true) {
                 lbl_total_user.setText(db.getTotalUser());
                 lbl_total_member.setText(db.getTotalMember());
-                int pendapatan = Integer.parseInt(db.getPendapatanHarian());
-                lbl_total_pendapatan.setText(nf.format(pendapatan));
+
+                try{
+                    int pendapatan = Integer.parseInt(db.getPendapatanHarian());
+                    lbl_total_pendapatan.setText(nf.format(pendapatan));
+                } catch (Exception e){
+                    lbl_total_pendapatan.setText("Rp. 0");
+                }
+
                 lbl_proses_selesai.setText(db.getTotalProsesSelesai());
                 lbl_proses_pengerjaan.setText(db.getTotalProsesPengerjaan());
                 try {
@@ -245,7 +252,7 @@ public class DashboardPage extends JFrame {
 
 
         lbl_total_pendapatan.setBounds(740, 80, 300, 300);
-        lbl_total_pendapatan.setFont(new java.awt.Font("", 0, 33));
+        lbl_total_pendapatan.setFont(new java.awt.Font("", 0, 29));
         lbl_total_pendapatan.setForeground(new java.awt.Color(41, 65, 114));
         this.getLayeredPane().add(lbl_total_pendapatan, Integer.valueOf(Integer.MAX_VALUE));
 

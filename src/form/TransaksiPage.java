@@ -148,7 +148,7 @@ public class TransaksiPage extends JFrame {
         databaseHelper db = new databaseHelper();
         db.add_member_combobox(cb_pilih_member);
 
-        this.getLayeredPane().add(cb_pilih_member, Integer.valueOf(Integer.MAX_VALUE));
+        this.getLayeredPane().add(cb_pilih_member, 1);
 
         /*
          * lbl_tanggal_trx
@@ -228,13 +228,8 @@ public class TransaksiPage extends JFrame {
          */
         cb_pilih_paket.setBounds(180, 290, 200, 20);
         cb_pilih_paket.setBorder(null);
-
-        // set combobox paket at number 1 layer
-
-
         db.add_data_paket_combobox(cb_pilih_paket);
-
-        this.getLayeredPane().add(cb_pilih_paket, Integer.valueOf(Integer.MAX_VALUE));
+        this.getLayeredPane().add(cb_pilih_paket, 2);
 
         /*
          * lbl_harga_paket
