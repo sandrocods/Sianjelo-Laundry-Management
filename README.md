@@ -106,6 +106,14 @@ Pada halaman setting aplikasi dapat mengaktifkan fitur notifikasi otomatis kirim
 - Copy link API yang tampil di browser anda , simpan padaa aplikasi Sianjelau
 - Jangan lupa Melakukan Autentikasi sebelum melakukan kirim pesan
 
+## Video Demo Notifikasi WhatsApp Otomatis
+
+
+
+https://user-images.githubusercontent.com/59155826/215007635-77cf8371-d6dd-4a26-aee3-a738a76b235d.mp4
+
+
+
 ## Team
 
 Aplikasi ini dibuat untuk memenuhi tugas besar matakuliah PBO dirancang dan dibuat oleh :
