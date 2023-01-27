@@ -807,6 +807,25 @@ public class databaseHelper {
         }
         return false;
     }
+
+
+    public String getApiEndpointSetting() {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM tb_setting;");
+            while (rs.next()) {
+                return rs.getString("api_endpoint");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close(conn);
+        }
+        return null;
+    }
 }
 
 

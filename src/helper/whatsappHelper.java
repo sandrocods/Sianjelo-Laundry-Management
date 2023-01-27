@@ -42,10 +42,12 @@ public class whatsappHelper {
         String encoded_message = template_message.replace(" ", "%20");
         encoded_message = encoded_message.replace("\n", "%5Cn");
 
+        databaseHelper db = new databaseHelper();
+        String api_endpoint = db.getApiEndpointSetting();
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:5000/api/send"))
+                    .uri(URI.create(api_endpoint))
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .method("POST", HttpRequest.BodyPublishers.ofString("to=" + phoneNumber + "&message=" + encoded_message))
                     .build();
