@@ -106,4 +106,11 @@ Pada halaman setting aplikasi dapat mengaktifkan fitur notifikasi otomatis kirim
 - Copy link API yang tampil di browser anda , simpan padaa aplikasi Sianjelau
 - Jangan lupa Melakukan Autentikasi sebelum melakukan kirim pesan
 
+## Team
 
+Aplikasi ini dibuat untuk memenuhi tugas besar matakuliah PBO dirancang dan dibuat oleh :
+
+- [Martinus Krisandro Perdana Putra (21104059)](https://github.com/sandrocods)
+- [Muhammad Haikal Faruq (21104037)](https://github.com/HaikalFaruq)
+- [Rizfan Herlaya (21104049)](https://github.com/Rizfan/)
+- [Airlangga Maulana Anwar (21104050)](https://github.com/Angga21104050)
