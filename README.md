@@ -119,6 +119,6 @@ https://user-images.githubusercontent.com/59155826/215007635-77cf8371-d6dd-4a26-
 Aplikasi ini dibuat untuk memenuhi tugas besar matakuliah PBO dirancang dan dibuat oleh :
 
 - [Martinus Krisandro Perdana Putra (21104059)](https://github.com/sandrocods)
-- [Muhammad Haikal Faruq (21104037)](https://github.com/HaikalFaruq)
 - [Rizfan Herlaya (21104049)](https://github.com/Rizfan/)
+- [Muhammad Haikal Faruq (21104037)](https://github.com/HaikalFaruq)
 - [Airlangga Maulana Anwar (21104050)](https://github.com/Angga21104050)
